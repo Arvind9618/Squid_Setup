@@ -1,0 +1,10 @@
+sudo su
+apt update -y
+apt-get install squid3 -y
+apt-get install apache2-utils -y
+read -e -p "Your desired username: " usrn
+htpasswd -c /etc/squid/passwd $usrn
+wget -O /etc/squid/squid.conf https://raw.githubusercontent.com/icharisofcc/proxy/master/spi-ubuntu.conf --no-check-certificate
+sed -i 's|/etc/squid3/passwd|/etc/squid/passwd|g' /etc/squid/squid.conf
+service squid restart && update-rc.d squid defaults
+systemctl status squid
